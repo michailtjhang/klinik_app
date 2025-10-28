@@ -1,0 +1,61 @@
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSeparator,
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { useForm } from "@inertiajs/react"
+import InputError from "./input-error"
+
+export function LoginForm({
+  className,
+  ...props
+}: React.ComponentProps<"form">) {
+
+  const { data, setData, post, processing, errors } = useForm({
+    email: "",
+    password: "",
+  })
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      post('/login')
+    } catch (error) {
+      
+    }
+  }
+
+  return (
+    <form className={cn("flex flex-col gap-6", className)} onSubmit={handleSubmit} {...props}>
+      <FieldGroup>
+        <div className="flex flex-col items-center gap-1 text-center">
+          <h1 className="text-2xl font-bold">Login to your account</h1>
+          <p className="text-muted-foreground text-sm text-balance">
+            Enter your email below to login to your account
+          </p>
+        </div>
+        <Field>
+          <FieldLabel htmlFor="email">Email</FieldLabel>
+          <Input id="email" onChange={(e) => setData('email', e.target.value)} type="email" placeholder="m@example.com" required />
+          <InputError message={errors.email} className="mt-1" />
+        </Field>
+        <Field>
+          <div className="flex items-center">
+            <FieldLabel htmlFor="password">Password</FieldLabel>
+          </div>
+          <Input id="password" onChange={(e) => setData('password', e.target.value)} type="password" required />
+          <InputError message={errors.password} className="mt-1" />
+        </Field>
+        <Field>
+          <Button type="submit">Login</Button>
+        </Field>
+      </FieldGroup>
+    </form>
+  )
+}
