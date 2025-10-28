@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useForm } from "@inertiajs/react"
 import InputError from "./input-error"
+import { toast } from "sonner"
 
 export function LoginForm({
   className,
@@ -27,7 +28,7 @@ export function LoginForm({
     try {
       post('/login')
     } catch (error) {
-      
+      toast.error("Login failed. Please try again.")
     }
   }
 
@@ -43,17 +44,17 @@ export function LoginForm({
         <Field>
           <FieldLabel htmlFor="email">Email</FieldLabel>
           <Input id="email" onChange={(e) => setData('email', e.target.value)} type="email" placeholder="m@example.com" required />
-          <InputError message={errors.email} className="mt-1" />
+          <InputError message={errors.email} />
         </Field>
         <Field>
           <div className="flex items-center">
             <FieldLabel htmlFor="password">Password</FieldLabel>
           </div>
           <Input id="password" onChange={(e) => setData('password', e.target.value)} type="password" required />
-          <InputError message={errors.password} className="mt-1" />
+          <InputError message={errors.password} />
         </Field>
         <Field>
-          <Button type="submit">Login</Button>
+          <Button type="submit" disabled={processing}>Login</Button>
         </Field>
       </FieldGroup>
     </form>
