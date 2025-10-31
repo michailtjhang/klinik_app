@@ -41,3 +41,17 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Pasien {
+    id: number;
+    nomor_pasien: string;
+    nama_lengkap: string;
+    alamat: string;
+    nomor_telepon: string;
+    jenis_kelamin: 'Laki-laki' | 'Perempuan';
+    tanggal_lahir: string;
+    golongan_darah: 'A' | 'B' | 'AB' | 'O';
+    pekerjaan: string;
+    nomor_ktp: string;
+    usia?: string; // Optional property for age
+}
