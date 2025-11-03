@@ -1,3 +1,4 @@
+import CustomPagination from "@/components/custom-pagination";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem, Pasien } from "@/types";
@@ -14,6 +15,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Index = () => {
 
     const {pasiens}:any = usePage().props;
+    const meta = pasiens.meta;
 
     useEffect(() => {
         console.log(pasiens);
@@ -44,6 +46,9 @@ const Index = () => {
                     ))}
                 </TableBody>
             </Table>
+            <div>
+                <CustomPagination meta={meta} />
+            </div>
         </AppLayout>
     )
 }
