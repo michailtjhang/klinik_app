@@ -17,6 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('data-pasien')->controller(PasienController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store');
+        Route::put('/{pasien_id}', 'update');
+        Route::delete('/{pasien_id}', 'destroy');
     });
 });
 

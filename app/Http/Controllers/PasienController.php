@@ -36,4 +36,20 @@ class PasienController extends Controller
 
         return redirect()->to('/data-pasien')->with('success', 'Pasien berhasil ditambahkan.');
     }
+
+    public function update(string $pasien, PasienStoreRequest $request)
+    {
+        $pasien = Pasien::findOrFail($pasien);
+        $pasien->update($request->validated());
+
+        return redirect()->to('/data-pasien')->with('success', 'Data pasien berhasil diperbarui.');
+    }
+
+    public function destroy(string $pasien)
+    {
+        $pasien = Pasien::findOrFail($pasien);
+        $pasien->delete();
+
+        return redirect()->to('/data-pasien')->with('success', 'Data pasien berhasil dihapus.');
+    }
 }

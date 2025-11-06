@@ -27,6 +27,9 @@ class PasienStoreRequest extends FormRequest
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'nomor_telepon' => 'nullable|string|max:20',
             'alamat' => 'nullable|string|max:500',
+            'golongan_darah' => 'nullable',
+            'pekerjaan' => 'nullable',
+            'nomor_ktp' => 'nullable',
         ];
     }
 

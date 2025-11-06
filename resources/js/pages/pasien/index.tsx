@@ -6,9 +6,10 @@ import AppLayout from "@/layouts/app-layout";
 import { handleChangePerPage } from "@/lib/utils";
 import { BreadcrumbItem, Pasien } from "@/types";
 import { Head, router, usePage } from "@inertiajs/react";
-import { RefreshCcw, Search } from "lucide-react";
+import { RefreshCcw, Search, Trash } from "lucide-react";
 import React, { useEffect } from "react";
 import FormPasien from "./components/formPasien";
+import { toast } from "sonner";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -76,8 +77,17 @@ const Index = () => {
                             <TableCell>{pasien.jenis_kelamin}</TableCell>
                             <TableCell>{pasien.usia ?? '-'}</TableCell>
                             <TableCell className="text-center">
-                                <div>
-                                <FormPasien pasien={pasien} />
+                                <div className="flex justify-center items-center gap-x-2">
+                                    <Button variant="destructive" size="icon" onClick={() => {
+                                        if (confirm("Apakah Anda yakin ingin menghapus data pasien ini?")) {
+                                            router.delete(`/data-pasien/${pasien.id}`, {
+                                                preserveState: true,
+                                            });
+                                        }
+                                    }}>
+                                        <Trash size={16} />
+                                    </Button>
+                                    <FormPasien pasien={pasien} />
                                 </div>
                             </TableCell>
                         </TableRow>
