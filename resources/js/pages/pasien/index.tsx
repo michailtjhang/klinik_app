@@ -8,6 +8,7 @@ import { BreadcrumbItem, Pasien } from "@/types";
 import { Head, router, usePage } from "@inertiajs/react";
 import { RefreshCcw, Search } from "lucide-react";
 import React, { useEffect } from "react";
+import FormPasien from "./components/formPasien";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -55,6 +56,7 @@ const Index = () => {
                         <RefreshCcw size={16} />
                     </Button>
                 </div>
+                <FormPasien />
             </div>
             <Table>
                 <TableHeader>
@@ -73,7 +75,11 @@ const Index = () => {
                             <TableCell>{pasien.nama_lengkap}</TableCell>
                             <TableCell>{pasien.jenis_kelamin}</TableCell>
                             <TableCell>{pasien.usia ?? '-'}</TableCell>
-                            <TableCell className="text-center">...</TableCell>
+                            <TableCell className="text-center">
+                                <div>
+                                <FormPasien pasien={pasien} />
+                                </div>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

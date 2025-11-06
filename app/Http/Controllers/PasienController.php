@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasienStoreRequest;
 use App\Http\Resources\PasienResource;
 use Inertia\Inertia;
 use App\Models\Pasien;
@@ -27,5 +28,12 @@ class PasienController extends Controller
         $pasiens = PasienResource::collection($query->paginate($perPage));
 
         return Inertia::render('pasien/index', compact('pasiens'));
+    }
+
+    public function store(PasienStoreRequest $request)
+    {
+        Pasien::create($request->validated());
+
+        return redirect()->to('/data-pasien')->with('success', 'Pasien berhasil ditambahkan.');
     }
 }
