@@ -52,4 +52,29 @@ class PasienController extends Controller
 
         return redirect()->to('/data-pasien')->with('success', 'Data pasien berhasil dihapus.');
     }
+
+    public function getDataPasienJson(Request $request)
+    {
+        $search = $request->query('search', '');
+        $query = Pasien::query();
+
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('nama_lengkap', 'like', '%' . $search . '%')
+                      ->orWhere('nomor_pasien', 'like', '%' . $search . '%');
+            });
+        }
+
+        
+        $query->orderBy('nama_lengkap','asc')->get();
+
+        $pasien = $query->get()->map(function ($pasien) {
+            return [
+                'label' => $pasien->nomor_pasien . ' - ' . $pasien->nama_lengkap,
+                'value' => $pasien->id,
+            ];
+        });
+
+        return response()->json($pasien);
+    }
 }
