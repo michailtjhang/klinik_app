@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('diagnosa')->controller(DiagnosaController::class)->group(function () {
         Route::get('/', 'index');
-        // Route::post('/', 'store');
+        Route::post('/', 'store');
         // Route::put('/{pasien_id}', 'update');
         // Route::delete('/{pasien_id}', 'destroy');
     });

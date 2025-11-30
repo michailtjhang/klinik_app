@@ -22,7 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Index = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         pasien_id: '',
         dokter: '',
         keluhan: '',
@@ -53,7 +53,21 @@ const Index = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(data);
+
+        try {
+            post('/diagnosa', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    reset();
+                    clearErrors();
+
+                    const reactSelect = document.getElementById('react-async-select-pasien') as HTMLSelectElement;
+                    reactSelect.value = '';
+                }
+            });
+        } catch (error) {
+            toast.error('Terjadi kesalahan saat menyimpan data diagnosa');
+        }
     }
 
     return (
