@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PasienStoreRequest;
 use App\Http\Resources\PasienResource;
+use App\Models\Diagnosa;
 use Inertia\Inertia;
 use App\Models\Pasien;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PasienController extends Controller
@@ -19,11 +21,11 @@ class PasienController extends Controller
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->where('nama_lengkap', 'like', '%' . $search . '%')
-                      ->orWhere('nomor_pasien', 'like', '%' . $search . '%');
+                    ->orWhere('nomor_pasien', 'like', '%' . $search . '%');
             });
         }
 
-        $query->orderBy('nama_lengkap','asc');
+        $query->orderBy('nama_lengkap', 'asc');
 
         $pasiens = PasienResource::collection($query->paginate($perPage));
 
@@ -61,12 +63,12 @@ class PasienController extends Controller
         if ($search) {
             $query->where(function ($query) use ($search) {
                 $query->where('nama_lengkap', 'like', '%' . $search . '%')
-                      ->orWhere('nomor_pasien', 'like', '%' . $search . '%');
+                    ->orWhere('nomor_pasien', 'like', '%' . $search . '%');
             });
         }
 
-        
-        $query->orderBy('nama_lengkap','asc')->get();
+
+        $query->orderBy('nama_lengkap', 'asc')->get();
 
         $pasien = $query->get()->map(function ($pasien) {
             return [
@@ -76,5 +78,23 @@ class PasienController extends Controller
         });
 
         return response()->json($pasien);
+    }
+
+    public function getRekamMedis(string $pasien_id)
+    {
+        $limit = request()->query('limit');
+
+        $query = Diagnosa::where('pasien_id', $pasien_id)
+            ->orderBy('created_at', 'desc');
+
+        if ($limit) {
+            $query->limit($limit);
+        }
+
+        $rekamMedis = $query->get()->map(function ($diagnosa) {
+            $diagnosa->tanggal_periksa = Carbon::parse($diagnosa->created_at)->locale('id')->format('l, d F Y');
+            return $diagnosa;
+        });
+        return response()->json($rekamMedis);
     }
 }

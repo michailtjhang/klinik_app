@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { BreadcrumbItem } from "@/types";
+import { BreadcrumbItem, Diagnosa } from "@/types";
 import AppLayout from "@/layouts/app-layout";
 import { Head, useForm } from "@inertiajs/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { HeartPulse } from "lucide-react";
+import { HeartPulse, NotebookText } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import InputError from "@/components/input-error";
 import axios from "axios";
 import { toast } from "sonner";
 import AsyncSelect from "react-select/async";
+import RekamMedis from "./components/rekamMedis";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -22,6 +23,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const Index = () => {
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [diagnosa, setDiagnosa] = useState<Diagnosa[]>([]);
     const { data, setData, post, processing, errors, reset, clearErrors } = useForm({
         pasien_id: '',
         dokter: '',
@@ -42,7 +44,6 @@ const Index = () => {
                 } 
             });
             setLoading(false);
-            console.log(data);
             return data;
         } catch (error) {
             setLoading(false);
@@ -70,6 +71,21 @@ const Index = () => {
         }
     }
 
+    const getDataDiagnosa = async (inputValue: string) => {
+        if (!inputValue) return [];
+        setLoading(true);
+
+        try {
+            const { data } = await axios.get(`/data-pasien/${inputValue}/rekam-medis?limit=5`);
+            setDiagnosa(data);
+        } catch (error) {
+            setLoading(false);
+            toast.error('Gagal memuat data diagnosa');
+        } finally {
+            setLoading(false);
+        }
+    }
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Data Diagnosa" />
@@ -93,6 +109,7 @@ const Index = () => {
                                 isClearable
                                 onChange={(selectOption: any) => {
                                     setData('pasien_id', selectOption?.value)
+                                    getDataDiagnosa(selectOption?.value)
                                 }}
                                 id="react-async-select-pasien"
                                 isLoading={loading}
@@ -144,7 +161,18 @@ const Index = () => {
                         </CardContent>
                     </form>
                 </Card>
-                <div className="col-span-6">Diagnosa</div>
+                <Card className="col-span-6">
+                    <CardHeader>
+                        <CardTitle className="flex flex-row items-center gap-x-1">
+                            <NotebookText />
+                            Riwayat Diagnosa Pasien
+                        </CardTitle>
+                        <CardDescription>Menampilkan 5 Riwayat Diagnosa Terakhir</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <RekamMedis diagnosa={diagnosa} />
+                    </CardContent>
+                </Card>
             </div>
         </AppLayout>
     );

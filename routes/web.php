@@ -21,6 +21,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('/{pasien_id}', 'update');
         Route::delete('/{pasien_id}', 'destroy');
         Route::get('/get-json', 'getDataPasienJson');
+        Route::get('/{pasien_id}/rekam-medis', 'getRekamMedis');
     });
 
     Route::prefix('diagnosa')->controller(DiagnosaController::class)->group(function () {
