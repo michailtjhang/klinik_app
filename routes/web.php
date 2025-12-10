@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DiagnosaController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\RekamMedisController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -22,11 +23,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{pasien_id}', 'destroy');
         Route::get('/get-json', 'getDataPasienJson');
         Route::get('/{pasien_id}/rekam-medis', 'getRekamMedis');
+        Route::get('/{pasien_id}', 'show');
     });
 
     Route::prefix('diagnosa')->controller(DiagnosaController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store');
+        // Route::put('/{pasien_id}', 'update');
+        // Route::delete('/{pasien_id}', 'destroy');
+    });
+
+    Route::prefix('rekam-medis')->controller(RekamMedisController::class)->group(function () {
+        Route::get('/', 'index');
+        // Route::post('/', 'store');
         // Route::put('/{pasien_id}', 'update');
         // Route::delete('/{pasien_id}', 'destroy');
     });

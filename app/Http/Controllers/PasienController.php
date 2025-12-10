@@ -67,7 +67,6 @@ class PasienController extends Controller
             });
         }
 
-
         $query->orderBy('nama_lengkap', 'asc')->get();
 
         $pasien = $query->get()->map(function ($pasien) {
@@ -92,9 +91,17 @@ class PasienController extends Controller
         }
 
         $rekamMedis = $query->get()->map(function ($diagnosa) {
-            $diagnosa->tanggal_periksa = Carbon::parse($diagnosa->created_at)->locale('id')->format('l, d F Y');
+            $diagnosa->tanggal_periksa = Carbon::parse($diagnosa->created_at)->locale('id')->translatedFormat('l, d F Y');
             return $diagnosa;
         });
         return response()->json($rekamMedis);
+    }
+
+    public function show(string $pasien_id)
+    {
+        $query = Pasien::with('diagnosa')->findOrFail($pasien_id);
+        $pasien = PasienResource::make($query);
+
+        return response()->json($pasien);
     }
 }

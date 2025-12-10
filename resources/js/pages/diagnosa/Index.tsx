@@ -43,6 +43,7 @@ const Index = () => {
                     search: inputValue 
                 } 
             });
+            console.log(data);
             setLoading(false);
             return data;
         } catch (error) {

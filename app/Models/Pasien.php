@@ -40,6 +40,11 @@ class Pasien extends Model
        }
     }
 
+    public function diagnosa()
+    {
+        return $this->hasMany(Diagnosa::class);
+    }
+
     protected static function booted()
     {
         static::created(function ($pasien) {

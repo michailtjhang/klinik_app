@@ -13,7 +13,7 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { ActivitySquare, BookOpen, Folder, LayoutGrid, Users } from 'lucide-react';
+import { ActivitySquare, BookOpen, Folder, HeartPulse, LayoutGrid, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -30,6 +30,11 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Diagnosa',
         href: '/diagnosa',
+        icon: HeartPulse,
+    },
+    {
+        title: 'Rekam Medis',
+        href: '/rekam-medis',
         icon: ActivitySquare,
     },
 ];
